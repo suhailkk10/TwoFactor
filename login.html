@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Login Form</h2>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="text-input">Username</label>
+                <input type="text" class="form-control" id="text-input" placeholder="Enter username" required>
+            </div>
+            <div class="form-group">
+                <label for="password-input">Password</label>
+                <input type="password" class="form-control" id="password-input" placeholder="Enter password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        <div>
+            <a href="register.html">Register</a>
+        </div>
+    </div>
+    
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+$(document).ready(function () {
+    $('#login-form').submit(function (event) {
+        event.preventDefault(); // prevent default form submission
+        var username = $('#text-input').val();
+        var password = $('#password-input').val();
+        $.ajax({
+            url: 'https://localhost:7214/api/User/login',
+            method: 'POST',
+            contentType: 'application/json',
+            accepts: '/',
+            data: JSON.stringify({
+                Username: username,
+                Password: password
+            }),
+            success: function (response) {
+                // alert(response.message);
+                // var id = JSON.parse(response.release).userid;
+// alert(response.userId);
+window.location.replace("authentication.html?id="+ response.userId);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert(xhr.responseJSON.message);
+            }
+        });
+    });
+});
+
+</script>
