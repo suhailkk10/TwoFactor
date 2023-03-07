@@ -54,7 +54,13 @@ $(document).ready(function () {
                 // alert(response.message);
                 // var id = JSON.parse(response.release).userid;
 // alert(response.userId);
-window.location.replace("authentication.html?id="+ response.userId);
+if (response.status == true) {
+window.location.replace("authentication.html?id="+ response.data.userId);
+}
+else
+{
+    alert(response.message);
+}
             },
             error: function (xhr, textStatus, errorThrown) {
                 alert(xhr.responseJSON.message);

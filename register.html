@@ -58,9 +58,13 @@
                 }),
                 success: function (response) {
                     //alert(response.message);
-                   
+                   if (response.status == true) {
                     window.location.replace("index.html");
-                    
+                   }
+                   else
+                   {
+                        alert(response.message);
+                   }
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     alert(xhr.responseJSON.message);
