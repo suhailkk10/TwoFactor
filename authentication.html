@@ -30,27 +30,26 @@
 
 <script type="text/javascript">
     const urlParams = new URLSearchParams(window.location.search);
-const id = urlParams.get('id');
-
-
-fetch('https://localhost:7214/api/User/qrcode?userId='+id)
-  .then(response => response.json())
-  .then(data => {
-    const imageUrl = data.data;
-    const status = data.status;
-    if (status == true) {
-        // Set the image source
-    const myImage = document.getElementById('image');
-    myImage.src = imageUrl;
-    }
+    const id = urlParams.get('id');
     
+    fetch('https://localhost:7214/api/User/qrcode?userId='+id)
+      .then(response => response.json())
+      .then(data => {
+        const imageUrl = data.data;
+        const status = data.status;
+        if (status == true)
+        {
+            // Set the image source
+            const myImage = document.getElementById('image');
+            myImage.src = imageUrl;
+        }    
   });
 
   $(document).ready(function () {
     $('#verify-form').submit(function (event) {
         event.preventDefault(); // prevent default form submission
         const urlParams = new URLSearchParams(window.location.search);
-const id = urlParams.get('id');
+        const id = urlParams.get('id');
         var Code = $('#code-input').val();
         $.ajax({
             url: 'https://localhost:7214/api/User/SetupAuthentication',
