@@ -21,6 +21,9 @@
             </div>
             <div class="form-group">
                 <img src="" id="image-captcha" />
+                <button type="button" onclick="reload()"  class="btn btn-primary"><span class="glyphicon glyphicon-refresh"></span> Refresh</button>
+            </div>
+            <div class="form-group">
                 <label for="text-input">Code</label>
                 <input type="password" class="form-control" id="captcha-input" placeholder="Enter Captcha" required>
             </div>
@@ -41,17 +44,33 @@
 
 <script type="text/javascript">
     var systemcode = "";
+    var timestamp = "";
 
-    fetch('https://localhost:7214/api/Captcha/Get')
-      .then(response => response.json())
-      .then(data => {
-        const imageUrl = data.imageBase64;
-         systemcode = data.code;
-            // Set the image source
-            const myImage = document.getElementById('image-captcha');
-            myImage.src = imageUrl;
-        });
+    reload();
+    // fetch('https://localhost:7214/api/Captcha/Get')
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     const imageUrl = data.imageBase64;
+    //      systemcode = data.code;
+    //         // Set the image source
+    //         const myImage = document.getElementById('image-captcha');
+    //         myImage.src = imageUrl;
+    //     });
 
+    function reload()
+    {
+        fetch('https://localhost:7214/api/Captcha/Get')
+                    .then(response => response.json())
+                    .then(data => {
+                        const imageUrl = data.imageBase64;
+                        systemcode = data.code;
+                        timestamp = data.timeStamp
+                        // Set the image source
+                        const myImage = document.getElementById('image-captcha');
+                        myImage.src = imageUrl;
+                        $("#captcha-input").val("");
+                    });
+    }
 
 $(document).ready(function () {
     
@@ -73,6 +92,7 @@ $(document).ready(function () {
                 Password: password,
                 SystemCaptcha: systemcode,
                 CaptchaCode: usercaptcha,
+                TimeStamp: timestamp
             }),
             success: function (response) {
                 if (response.status == true) {
@@ -80,16 +100,8 @@ $(document).ready(function () {
                 }
                 else
                 {
-                    fetch('https://localhost:7214/api/Captcha/Get')
-                    .then(response => response.json())
-                    .then(data => {
-                        const imageUrl = data.imageBase64;
-                        systemcode = data.code;
-                        // Set the image source
-                        const myImage = document.getElementById('image-captcha');
-                        myImage.src = imageUrl;
-                        $("#captcha-input").val("");
-                    });
+                    alert(response.message);
+                    reload();
                 }
             },
             error: function (xhr, textStatus, errorThrown) {
